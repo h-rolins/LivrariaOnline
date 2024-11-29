@@ -13,7 +13,7 @@ public class buscaBD {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public void listarLivros() { // Alterado para 'public'
+    public void listarLivros() {
         String sql = "SELECT * FROM livros";
         try {
             List<Map<String, Object>> livros = jdbcTemplate.queryForList(sql);
@@ -78,7 +78,6 @@ public class buscaBD {
     public void listarLivrosPorIdioma(String idioma) {
         String sql = "SELECT * FROM livros WHERE idioma = ?";
         try {
-            // Realizando a consulta no banco de dados para listar livros do idioma escolhido
             List<Map<String, Object>> livros = jdbcTemplate.queryForList(sql, idioma);
             if (!livros.isEmpty()) {
                 for (Map<String, Object> livro : livros) {

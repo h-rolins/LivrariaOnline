@@ -1,5 +1,4 @@
 package rolins.bilbiotecaOnline.servicos;
-
 import rolins.bilbiotecaOnline.api.acessando_valores;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -41,10 +40,8 @@ public class InsercaoBD {
                     int anoNascimento = autor.get("birth_year").getAsInt();
                     Integer anoFalecimento = autor.has("death_year") ? autor.get("death_year").getAsInt() : null;
 
-                    // Inserir o autor no banco, se não existir
                     inserirAutor(nomeAutor, anoNascimento, anoFalecimento);
 
-                    // Inserir o livro com o nome do autor e o idioma diretamente
                     JsonArray idiomasArray = livro.getAsJsonArray("languages");
                     StringBuilder idiomasBuilder = new StringBuilder();
                     for (int i = 0; i < idiomasArray.size(); i++) {
@@ -55,7 +52,6 @@ public class InsercaoBD {
                     }
                     String idiomas = idiomasBuilder.toString();
 
-                    // Inserir livro com título, autor e idioma
                     inserirLivro(titulo, nomeAutor, idiomas);
                 }
             }
@@ -65,11 +61,10 @@ public class InsercaoBD {
     }
 
     private void inserirAutor(String nomeAutor, int anoNascimento, Integer anoFalecimento) {
-        // Verificar se o autor já existe no banco
+
         String sqlVerificarAutor = "SELECT COUNT(*) FROM autores WHERE nome = ?";
         Integer count = jdbcTemplate.queryForObject(sqlVerificarAutor, new Object[]{nomeAutor}, Integer.class);
 
-        // Se o autor não existe, inserir
         if (count == 0) {
             String sql = "INSERT INTO autores (nome, ano_nascimento, ano_falecimento) VALUES (?, ?, ?)";
             try {
@@ -84,7 +79,6 @@ public class InsercaoBD {
     }
 
     private void inserirLivro(String titulo, String nomeAutor, String idiomas) {
-        // Inserir o livro com título, autor e idioma diretamente na tabela livros
         String sql = "INSERT INTO livros (titulo, autor, idioma) VALUES (?, ?, ?)";
         try {
             jdbcTemplate.update(sql, titulo, nomeAutor, idiomas);

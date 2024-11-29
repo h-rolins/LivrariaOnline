@@ -1,5 +1,4 @@
 package rolins.bilbiotecaOnline.modelos;
-
 import jakarta.persistence.*;
 
 @Entity
